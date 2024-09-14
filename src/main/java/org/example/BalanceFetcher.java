@@ -100,7 +100,7 @@ public class BalanceFetcher {
             try {
                 // Get the current balance
                 long currentBalance = getOnChainBalance();
-                System.out.println("Balance confirmado actual: " + currentBalance + " satoshis");
+                System.out.println("Confirmed Current Balance: " + currentBalance + " satoshis");
 
                 // Get the balance from 7 days ago
                 long pastBalance = readPastBalance();
