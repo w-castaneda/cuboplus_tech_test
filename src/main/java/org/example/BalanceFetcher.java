@@ -20,7 +20,6 @@ public class BalanceFetcher {
     private static final String API_URL = "https://mempool.space/api/address/" + ADDRESS;
     private static final String BALANCE_FILE_PATH = "balance_last_7_days.txt";
 
-
     public static void main(String[] args) {
         getMempoolBalance();
         getVariationBalance();
@@ -113,7 +112,7 @@ public class BalanceFetcher {
                     // Calculate the balance variation
                     long balanceVariation = currentBalance - pastBalance;
                     System.out.println("Confirmed Variation Balance from the last 7 days: " + balanceVariation + " satoshis");
-                    //System.out.println("Variación del balance confirmado en los últimos 7 días: " + (balanceVariation / 100_000_000.0) + " BTC");
+                    //System.out.println("Confirmed Balance Variation in the last 7 days: " + (balanceVariation / 100_000_000.0) + " BTC");
                 }
 
                 // Save the current balance for future comparison
