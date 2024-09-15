@@ -47,7 +47,7 @@ public class BalanceFetcher {
                     confirmedBalance = fundedTxoSumChain - spentTxoSumChain;
                     System.out.println("On-chain balance (in satoshis): " + confirmedBalance);
                     //System.out.println("On-chain balance (in BTC): " + (confirmedBalance / 100_000_000.0));
-                    System.out.println("---------------------------------------------------------------");
+                    System.out.println("----------------------------------------------------------------");
                 } else {
                     System.out.println("The following fields were not found 'funded_txo_sum' or 'spent_txo_sum' in 'chain_stats'.");
                 }
@@ -77,6 +77,7 @@ public class BalanceFetcher {
 
                 if (fundedTxoSumMempool != -1 && spentTxoSumMempool != -1) {
                     long mempoolBalance = fundedTxoSumMempool - spentTxoSumMempool;
+                    System.out.println("----------------------------------------------------------------");
                     System.out.println("Mempool Balance (in satoshis): " + mempoolBalance);
                     //System.out.println("Mempool Balance (in BTC): " + (mempoolBalance / 100_000_000.0));
                     System.out.println("----------------------------------------------------------------");
@@ -108,7 +109,7 @@ public class BalanceFetcher {
                     System.out.println("Balance from the last 7 days Not Found.");
                 } else {
                     System.out.println("Confirmed Balance from the last 7 days: " + pastBalance + " satoshis");
-                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("----------------------------------------------------------------");
                     // Calculate the balance variation
                     long balanceVariation = currentBalance - pastBalance;
                     System.out.println("Confirmed Variation Balance from the last 7 days: " + balanceVariation + " satoshis");
