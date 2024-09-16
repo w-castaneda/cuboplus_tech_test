@@ -181,7 +181,7 @@ public class TechTest {
                 if (input.has("prevout")) {
                     JSONObject prevout = input.getJSONObject("prevout");
                     if (prevout.has("scriptpubkey_address") && prevout.getString("scriptpubkey_address").equals(address)) {
-                        // Restar el valor de la entrada del balance
+                        //Substract the value of the input from the balance
                         long value = prevout.getLong("value");
                         totalMemPoolBalance -= value;
                     }
@@ -193,6 +193,7 @@ public class TechTest {
                 JSONObject output = outputs.getJSONObject(k);
                 if (output.has("scriptpubkey_address") && output.getString("scriptpubkey_address").equals(address)) {
                     // Sumar el valor de la salida al balance
+                    //Add the value of the output from the balance
                     long value = output.getLong("value");
                     totalMemPoolBalance += value;
                 }
