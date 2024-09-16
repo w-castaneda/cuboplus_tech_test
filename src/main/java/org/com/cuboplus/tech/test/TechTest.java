@@ -1,4 +1,4 @@
-package org.example;
+package org.com.cuboplus.tech.test;
 
 import java.io.IOException;
 import java.nio.file.Files;
