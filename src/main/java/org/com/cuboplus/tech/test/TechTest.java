@@ -21,15 +21,21 @@ import java.util.regex.Pattern;
 
 public class TechTest {
 
+    //Address of El Salvador Bitcoin treasury holdings
     private static final String ADDRESS = "32ixEdVJWo3kmvJGMTZq5jAQVZZeuwnqzo";
+    //API_URL_MEMPOOL - to calculate mempool balance based on confirmed transactions
     private static final String API_URL_MEMPOOL = "https://mempool.space/api/address/" + ADDRESS + "/txs/mempool";
+    //API_URL_TXS - to calculate the On-Chain balance based also on confirmed transactions
     private static final String API_URL_TXS = "https://mempool.space/api/address/" + ADDRESS + "/txs";
+    //FILE_PATH - File where the On-chain balance is stored.
     private static final String FILE_PATH = "balance_log.txt";
 
     public static void main(String[] args) {
         try {
+            //We can modify this value to obtain the 7 days balance variation or 30 days as requested in the Technical test
+            int daysAgo = 7;
             // Parameter of 30 days
-            int daysAgo = 30; // We can modify this value to obtain the 7 days balance variattion or 30 days as requested in the Technical test
+            //int daysAgo = 30;
 
             // Getting the current balance
             long onChainBalance = getOnChainBalance(ADDRESS);
@@ -70,6 +76,7 @@ public class TechTest {
         }
     }
 
+    //Method to get the current date to be used when saving the on-Chain balance
     private static String getCurrentDate() {
         Instant instant = Instant.now();
         ZonedDateTime dateTime = instant.atZone(ZoneId.systemDefault());
@@ -77,6 +84,7 @@ public class TechTest {
         return dateTime.format(formatter);
     }
 
+    //Method to format the date that it is going to be used to search it on the file
     private static String getDateDaysAgo(int daysAgo) {
         Instant instant = Instant.now().minusSeconds(daysAgo * 86400L); // 86400 seconds in a day
         ZonedDateTime dateTime = instant.atZone(ZoneId.systemDefault());
@@ -84,6 +92,7 @@ public class TechTest {
         return dateTime.format(formatter);
     }
 
+    //Method to save the balance to the balance_log.txt
     private static void saveBalanceToFile(long balance, String date) throws IOException {
         String logEntry = date + " - Balance: " + balance + " satoshis\n";
         Files.write(Paths.get(FILE_PATH), logEntry.getBytes(),
@@ -91,6 +100,7 @@ public class TechTest {
                 java.nio.file.StandardOpenOption.APPEND);
     }
 
+    //Method to find the balance according to the specific date
     private static long getBalanceForDate(String dateToFind) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
         String patternString = "^" + Pattern.quote(dateToFind) + ".* - Balance: (\\d+) satoshis";
@@ -105,6 +115,7 @@ public class TechTest {
         return -1;
     }
 
+    //Method to get and calculate the On-Chain balance
     private static long getOnChainBalance(String address) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -113,7 +124,7 @@ public class TechTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         JSONArray txArray = new JSONArray(response.body());
-        long totalBalance = 0;
+        long totalOnChainBalance = 0;
 
         for (int i = 0; i < txArray.length(); i++) {
             JSONObject tx = txArray.getJSONObject(i);
@@ -127,7 +138,7 @@ public class TechTest {
                     JSONObject prevout = input.getJSONObject("prevout");
                     if (prevout.has("scriptpubkey_address") && prevout.getString("scriptpubkey_address").equals(address)) {
                         long value = prevout.getLong("value");
-                        totalBalance -= value;
+                        totalOnChainBalance -= value;
                     }
                 }
             }
@@ -137,14 +148,15 @@ public class TechTest {
                 JSONObject output = outputs.getJSONObject(k);
                 if (output.has("scriptpubkey_address") && output.getString("scriptpubkey_address").equals(address)) {
                     long value = output.getLong("value");
-                    totalBalance += value;
+                    totalOnChainBalance += value;
                 }
             }
         }
 
-        return totalBalance;
+        return totalOnChainBalance;
     }
 
+    //Method to get the mempool balance according to confirmed transactions
     private static long getMempoolBalance(String address) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -190,6 +202,7 @@ public class TechTest {
         return totalMemPoolBalance;
     }
 
+    //Method to convert previousl saved Satoshis to bitcoins
     private static double convertSatoshisToBTC(long satoshis) {
         return satoshis / 100_000_000.0;
     }
