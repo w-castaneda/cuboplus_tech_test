@@ -8,7 +8,7 @@ to retrieve and calculate the following information:
 1. On-chain Balance.
 2. Mempool Balance.
 3. Balance variation in a period of 30 days.
-4. Balance variation in a period of 7 days.
+4. Balance variation in a period of 7 days
 
 
 [video](link to video here)
