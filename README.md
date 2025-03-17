@@ -1,7 +1,7 @@
 ### CUBO+
 
 #### Overview
-This repository contains the code and resources for the CUBO+ technical test. Which consist in consuming Rest Api from mempool.space
+This repository contains the code and resources for the CUBO+. consuming Rest Api from mempool.space
 to retrieve and calculate the following information:
 
 1. On-chain Balance.
