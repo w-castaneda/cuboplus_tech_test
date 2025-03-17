@@ -1,4 +1,4 @@
-### CUBO+ Technical Test
+### CUBO+
 
 #### Overview
 This repository contains the code and resources for the CUBO+ technical test. Which consist in consuming Rest Api from mempool.space
